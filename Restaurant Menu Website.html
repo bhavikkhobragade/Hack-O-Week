@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Spice Route Kitchen | Luxury Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: #05070a;
+            color: #e2e8f0;
+        }
+        h1, h2, h3, .font-royal { font-family: 'Cinzel', serif; }
+        
+        .gold-text {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(191, 149, 63, 0.2);
+            border-radius: 30px;
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(191, 149, 63, 0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .price-badge {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #bf953f;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="relative h-[70vh] flex items-center justify-center overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1920&q=80" 
+             class="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px] brightness-[0.3]" alt="bg">
+        <div class="relative text-center px-6">
+            <span class="text-stone-400 tracking-[0.6em] uppercase text-sm mb-4 block">Est. 2026</span>
+            <h1 class="text-5xl md:text-8xl font-bold gold-text mb-4">The Spice Route Kitchen</h1>
+            <p class="text-stone-400 text-lg md:text-2xl font-light italic">Where Heritage Meets Fine Dining</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-20">
+        
+        <div class="mb-32">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl gold-text inline-block border-b border-stone-800 pb-4">Royal Appetizers</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="glass-card overflow-hidden">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601050633729-1954731f061b?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Samosa">
+                        <div class="absolute top-4 right-4 price-badge px-4 py-1 rounded-lg text-white font-bold">₹180</div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-white">Classic Vegetable Samosa</h3>
+                        <p class="text-stone-400 text-sm">Flaky pastry filled with spiced potatoes and peas, served with mint reduction.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card overflow-hidden">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Kebab">
+                        <div class="absolute top-4 right-4 price-badge px-4 py-1 rounded-lg text-white font-bold">₹340</div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-white">Lucknowi Galouti Kebab</h3>
+                        <p class="text-stone-400 text-sm">Melt-in-the-mouth minced meat patties with 21 aromatic hand-ground spices.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card overflow-hidden">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Wings">
+                        <div class="absolute top-4 right-4 price-badge px-4 py-1 rounded-lg text-white font-bold">₹310</div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-white">Tandoori Malai Wings</h3>
+                        <p class="text-stone-400 text-sm">Chicken wings glazed with heavy cream, cardamom, and white pepper.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-32">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl gold-text inline-block border-b border-stone-800 pb-4">Signature Mains</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="glass-card p-6 flex flex-col md:flex-row gap-6">
+                    <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=500&q=80" class="w-full md:w-48 h-48 rounded-2xl object-cover" alt="Dal">
+                    <div class="flex-grow py-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold text-white">The Spice Route Dal</h3>
+                            <span class="gold-text font-bold text-xl">₹395</span>
+                        </div>
+                        <p class="text-stone-400 text-sm mb-4">Black lentils slow-cooked for 48 hours in a copper vessel with churned butter.</p>
+                        <span class="text-[10px] tracking-widest uppercase border border-stone-700 px-2 py-1 text-stone-500">Chef's Recommended</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 flex flex-col md:flex-row gap-6">
+                    <img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?auto=format&fit=crop&w=500&q=80" class="w-full md:w-48 h-48 rounded-2xl object-cover" alt="Biryani">
+                    <div class="flex-grow py-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold text-white">Nizami Dum Biryani</h3>
+                            <span class="gold-text font-bold text-xl">₹520</span>
+                        </div>
+                        <p class="text-stone-400 text-sm mb-4">Long-grain basmati rice layered with saffron, rose water, and tender meat.</p>
+                        <span class="text-[10px] tracking-widest uppercase border border-stone-700 px-2 py-1 text-stone-500">Slow Cooked</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 flex flex-col md:flex-row gap-6">
+                    <img src="https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=500&q=80" class="w-full md:w-48 h-48 rounded-2xl object-cover" alt="Butter Chicken">
+                    <div class="flex-grow py-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold text-white">Old Delhi Butter Chicken</h3>
+                            <span class="gold-text font-bold text-xl">₹480</span>
+                        </div>
+                        <p class="text-stone-400 text-sm mb-4">Smoked chicken tikka simmered in a velvet tomato gravy with dried fenugreek.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 flex flex-col md:flex-row gap-6">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80" class="w-full md:w-48 h-48 rounded-2xl object-cover" alt="Veg">
+                    <div class="flex-grow py-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold text-white">Garden Paneer Lababdar</h3>
+                            <span class="gold-text font-bold text-xl">₹410</span>
+                        </div>
+                        <p class="text-stone-400 text-sm mb-4">Fresh cottage cheese cubes in a tangy onion-tomato gravy with bell peppers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-32">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl gold-text inline-block border-b border-stone-800 pb-4">Royal Desserts</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card p-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-amber-600" alt="Gulab">
+                    <h4 class="font-bold text-white mb-1">Shahi Gulab Jamun</h4>
+                    <span class="gold-text">₹160</span>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1563805039162-30060936e30a?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-amber-600" alt="Rasmalai">
+                    <h4 class="font-bold text-white mb-1">Kesar Rasmalai</h4>
+                    <span class="gold-text">₹190</span>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-amber-600" alt="Dessert">
+                    <h4 class="font-bold text-white mb-1">Moong Dal Halwa</h4>
+                    <span class="gold-text">₹220</span>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-amber-600" alt="Kulfi">
+                    <h4 class="font-bold text-white mb-1">Pista Matka Kulfi</h4>
+                    <span class="gold-text">₹150</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="grid md:grid-cols-2 gap-10">
+            <div class="glass-card p-10 flex flex-col items-center justify-center text-center">
+                <h3 class="text-2xl gold-text mb-6">Secured Payment</h3>
+                <div class="bg-white p-3 rounded-2xl mb-4">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=YOURUPIID@okaxis&pn=SpiceRouteKitchen" alt="QR" class="w-40 h-40">
+                </div>
+                <p class="text-stone-500 text-xs tracking-widest uppercase">Scan to Pay via UPI</p>
+            </div>
+
+            <div class="glass-card p-10 flex flex-col justify-center text-center border-l-4 border-l-green-600">
+                <h3 class="text-3xl text-white mb-4 font-royal">Experience Fast Delivery</h3>
+                <p class="text-stone-400 mb-10 leading-relaxed">Simply click below to send your selection to our concierge on WhatsApp.</p>
+                <a href="https://wa.me/919999999999?text=Namaste! I want to order from The Spice Route Kitchen." 
+                   class="bg-stone-100 hover:bg-white text-black py-5 rounded-full font-bold text-xl transition-all shadow-xl hover:scale-105 flex justify-center items-center gap-3">
+                    Place Order Now
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-20 text-center border-t border-stone-900 bg-stone-950">
+        <h2 class="gold-text text-3xl mb-4">The Spice Route Kitchen</h2>
+        <p class="text-stone-500 text-sm">Luxury Dining | 123 Heritage Lane, Civil Lines, Nagpur</p>
+        <div class="flex justify-center gap-6 mt-8 text-stone-600">
+            <span class="hover:text-amber-500 cursor-pointer">Instagram</span>
+            <span class="hover:text-amber-500 cursor-pointer">Facebook</span>
+            <span class="hover:text-amber-500 cursor-pointer">Reviews</span>
+        </div>
+    </footer>
+
+</body>
+</html>

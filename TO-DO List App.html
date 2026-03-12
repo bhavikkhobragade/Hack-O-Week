@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productivity Dashboard</title>
+
+<style>
+
+:root{
+  --text:#f1f1f1;
+}
+
+/* Base Body */
+body{
+  margin:0;
+  font-family:Arial;
+  color:var(--text);
+  padding:20px;
+  background: linear-gradient(270deg, #b197fc, #a27dfc, #8b5cf6, #7c3aed);
+  background-size:1400% 1400%;
+}
+
+/* Container */
+.container{
+  max-width:900px;
+  margin:auto;
+}
+
+/* Cards */
+.card{
+  background: rgba(115, 70, 200, 0.6);
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+h2{
+  margin-top:0;
+}
+
+input,select,button{
+  padding:8px;
+  margin:5px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+/* Buttons */
+button{
+  background:#7c3aed;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+
+/* Tasks */
+.task{
+  padding:10px;
+  background:rgba(123, 72, 220, 0.6);
+  margin:5px 0;
+  border-radius:6px;
+  cursor:grab;
+  backdrop-filter:blur(5px);
+}
+
+.completed{
+  text-decoration:line-through;
+  color:gray;
+}
+
+/* Weekly planner */
+.week{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.day{
+  background:rgba(123, 72, 220, 0.6);
+  padding:8px;
+  border-radius:6px;
+  min-height:60px;
+  font-size:12px;
+}
+
+/* Calendar */
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.calday{
+  background:rgba(123, 72, 220, 0.6);
+  padding:10px;
+  border-radius:6px;
+  height:70px;
+  font-size:12px;
+}
+
+/* Progress bar */
+.progress{
+  background:#444;
+  height:12px;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.bar{
+  height:12px;
+  background:#7c3aed;
+  width:0%;
+}
+
+/* Analytics */
+.analytics{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+}
+
+/* Mobile responsiveness */
+@media(max-width:700px){
+  .week{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .calendar{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+
+/* Dark Mode Styles */
+body.dark {
+  --text: #f1f1f1;
+  background: #1e1b2f; /* very dark violet */
+}
+
+body.dark .card {
+  background: rgba(50, 35, 100, 0.7);
+}
+
+body.dark .task,
+body.dark .day,
+body.dark .calday {
+  background: rgba(70, 40, 130, 0.7);
+}
+
+body.dark button {
+  background: #5b21b6;
+  color: #fff;
+}
+
+body.dark .progress {
+  background: #333;
+}
+
+body.dark .bar {
+  background: #7c3aed;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+<h2>📋 Add Task</h2>
+
+<input id="taskName" placeholder="Task name">
+
+<input type="date" id="taskDate">
+
+<select id="category">
+<option>Work</option>
+<option>Study</option>
+<option>Personal</option>
+</select>
+
+<br>
+
+<button onclick="addTask()">Add Task</button>
+<button onclick="toggleDark()">🌙 Dark Mode</button>
+
+</div>
+
+<div class="card">
+<h2>📝 Task List (Drag to reorder)</h2>
+<div id="taskList"></div>
+</div>
+
+<div class="card">
+<h2>📊 Daily Progress</h2>
+<div class="progress">
+<div class="bar" id="progressBar"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>📅 Weekly Planner</h2>
+<div class="week" id="week"></div>
+</div>
+
+<div class="card">
+<h2>🗓 Calendar</h2>
+<div class="calendar" id="calendar"></div>
+</div>
+
+<div class="card">
+<h2>📊 Productivity Analytics</h2>
+<div class="analytics">
+<div>Total Tasks: <span id="total"></span></div>
+<div>Completed: <span id="done"></span></div>
+<div>Pending: <span id="pending"></span></div>
+</div>
+</div>
+
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function save(){
+  localStorage.setItem("tasks",JSON.stringify(tasks));
+}
+
+function addTask(){
+  let name=document.getElementById("taskName").value;
+  let date=document.getElementById("taskDate").value;
+  let cat=document.getElementById("category").value;
+  if(!name) return;
+
+  tasks.push({
+    name,
+    date,
+    cat,
+    completed:false
+  });
+
+  document.getElementById("taskName").value="";
+  document.getElementById("taskDate").value="";
+
+  render();
+}
+
+function toggle(i){
+  tasks[i].completed=!tasks[i].completed;
+  render();
+}
+
+function render(){
+  let list=document.getElementById("taskList");
+  list.innerHTML="";
+
+  tasks.forEach((t,i)=>{
+    let div=document.createElement("div");
+    div.className="task "+(t.completed?"completed":"");
+    div.draggable=true;
+    div.innerHTML= t.name+" | "+t.cat+" | "+(t.date||"no date");
+
+    div.onclick=()=>toggle(i);
+
+    div.addEventListener("dragstart",e=>{
+      e.dataTransfer.setData("text/plain",i);
+    });
+
+    div.addEventListener("dragover",e=>e.preventDefault());
+
+    div.addEventListener("drop",e=>{
+      let from=e.dataTransfer.getData("text");
+      let temp=tasks[from];
+      tasks.splice(from,1);
+      tasks.splice(i,0,temp);
+      render();
+    });
+
+    list.appendChild(div);
+  });
+
+  progress();
+  calendar();
+  week();
+  analytics();
+  save();
+}
+
+function progress(){
+  let done=tasks.filter(t=>t.completed).length;
+  let percent=tasks.length? (done/tasks.length)*100:0;
+  document.getElementById("progressBar").style.width=percent+"%";
+}
+
+function analytics(){
+  let done=tasks.filter(t=>t.completed).length;
+  document.getElementById("total").innerText=tasks.length;
+  document.getElementById("done").innerText=done;
+  document.getElementById("pending").innerText=tasks.length-done;
+}
+
+function week(){
+  let week=document.getElementById("week");
+  week.innerHTML="";
+  let days=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  days.forEach(d=>{
+    let div=document.createElement("div");
+    div.className="day";
+    div.innerHTML="<b>"+d+"</b>";
+
+    tasks.forEach(t=>{
+      if(t.date){
+        let day=new Date(t.date).getDay();
+        if(days[day]==d){
+          div.innerHTML+="<br>"+t.name;
+        }
+      }
+    });
+
+    week.appendChild(div);
+  });
+}
+
+function calendar(){
+  let cal=document.getElementById("calendar");
+  cal.innerHTML="";
+
+  for(let i=1;i<=30;i++){
+    let div=document.createElement("div");
+    div.className="calday";
+    div.innerHTML="<b>"+i+"</b>";
+
+    tasks.forEach(t=>{
+      if(t.date){
+        let d=new Date(t.date).getDate();
+        if(d==i){
+          div.innerHTML+="<br>"+t.name;
+        }
+      }
+    });
+
+    cal.appendChild(div);
+  }
+}
+
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+
+render();
+</script>
+
+</body>
+</html>

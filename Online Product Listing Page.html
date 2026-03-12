@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Tech Store India</title>
+
+<style>
+:root {
+    --primary: #4f46e5;
+    --secondary: #ec4899;
+    --bg1: #e0e7ff;
+    --bg2: #fce7f3;
+    --success: #16a34a;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    background-attachment: fixed;
+}
+
+header {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 { margin: 0; }
+
+.cart {
+    background: white;
+    color: var(--primary);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container {
+    padding: 30px 40px;
+}
+
+/* Category Buttons */
+.categories {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.categories button {
+    margin: 5px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.categories button.active,
+.categories button:hover {
+    background: var(--secondary);
+    color: white;
+}
+
+/* Products */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.product {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    text-align: center;
+}
+
+.product:hover {
+    transform: translateY(-6px);
+}
+
+.emoji {
+    font-size: 50px;
+}
+
+.category-label {
+    font-size: 12px;
+    color: gray;
+}
+
+.desc {
+    font-size: 14px;
+    color: #555;
+    margin: 8px 0;
+}
+
+.price {
+    color: var(--secondary);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.rating {
+    color: #f59e0b;
+    font-size: 14px;
+}
+
+.stock {
+    color: var(--success);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+button.add-btn {
+    background: var(--primary);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button.add-btn:hover {
+    background: var(--secondary);
+}
+
+/* Pagination */
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination button {
+    margin: 5px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination .active {
+    background: var(--secondary);
+    color: white;
+}
+
+/* Cart */
+.cart-box {
+    position: fixed;
+    right: 20px;
+    top: 90px;
+    width: 300px;
+    background: white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Modern Tech Store 🇮🇳</h1>
+    <div class="cart" onclick="toggleCart()">
+        🛒 Cart (<span id="cart-count">0</span>)
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="categories" id="category-buttons"></div>
+
+    <div class="products" id="product-list"></div>
+    <div class="pagination" id="pagination"></div>
+</div>
+
+<div class="cart-box" id="cart-box">
+    <h3>Your Cart</h3>
+    <div id="cart-items"></div>
+    <hr>
+    <strong>Total: ₹<span id="total">0</span></strong>
+</div>
+
+<script>
+const products = [
+{ id:0, name:"iPhone 14 Pro", emoji:"📱", category:"Smartphones" },
+{ id:1, name:"Samsung Galaxy S23", emoji:"📱", category:"Smartphones" },
+{ id:2, name:"MacBook Air M2", emoji:"💻", category:"Laptops" },
+{ id:3, name:"Dell XPS 13", emoji:"💻", category:"Laptops" },
+{ id:4, name:"Gaming Laptop", emoji:"🎮💻", category:"Laptops" },
+{ id:5, name:"Mechanical Keyboard", emoji:"⌨️", category:"Accessories" },
+{ id:6, name:"Razer Mouse", emoji:"🖱️", category:"Accessories" },
+{ id:7, name:"Portable SSD", emoji:"💾", category:"Storage" },
+{ id:8, name:"Smart LED TV", emoji:"📺", category:"Home Tech" },
+{ id:9, name:"Smart Thermostat", emoji:"🌡️", category:"Home Tech" },
+{ id:10, name:"Robot Vacuum", emoji:"🤖", category:"Home Tech" },
+{ id:11, name:"Smart Bulb", emoji:"💡", category:"Home Tech" },
+{ id:12, name:"Sony Headphones", emoji:"🎧", category:"Audio" },
+{ id:13, name:"Bluetooth Speaker", emoji:"🔊", category:"Audio" },
+{ id:14, name:"AirPods Pro", emoji:"🎵", category:"Audio" },
+{ id:15, name:"JBL Speaker", emoji:"📢", category:"Audio" },
+{ id:16, name:"Canon Camera", emoji:"📷", category:"Cameras" },
+{ id:17, name:"GoPro Camera", emoji:"📸", category:"Cameras" },
+{ id:18, name:"Drone 4K", emoji:"🚁", category:"Cameras" },
+{ id:19, name:"PlayStation 5", emoji:"🎮", category:"Gaming" },
+{ id:20, name:"Xbox Series X", emoji:"🕹️", category:"Gaming" },
+{ id:21, name:"VR Headset", emoji:"🥽", category:"Gaming" },
+{ id:22, name:"Gaming Monitor", emoji:"🖥️", category:"Gaming" },
+{ id:23, name:"Apple Watch", emoji:"⌚", category:"Wearables" },
+{ id:24, name:"Fitness Band", emoji:"🏃", category:"Wearables" },
+{ id:25, name:"Tablet Stand", emoji:"📲", category:"Accessories" },
+{ id:26, name:"Ring Doorbell", emoji:"🔔", category:"Home Tech" },
+{ id:27, name:"Smart Speaker", emoji:"🗣️", category:"Audio" },
+{ id:28, name:"Wireless Charger", emoji:"🔋", category:"Accessories" },
+{ id:29, name:"iPad Pro", emoji:"📱💻", category:"Tablets" }
+];
+
+products.forEach(p=>{
+    p.description="Premium quality product with advanced features and 1-year warranty.";
+    p.price=Math.floor(Math.random()*80000)+10000;
+    p.rating=(Math.random()*2+3).toFixed(1);
+    p.stock=Math.floor(Math.random()*20)+5;
+});
+
+const itemsPerPage=6;
+let currentPage=1;
+let cart=[];
+let currentCategory="All";
+
+const categories=["All",...new Set(products.map(p=>p.category))];
+
+function createCategoryButtons(){
+const container=document.getElementById("category-buttons");
+categories.forEach(cat=>{
+container.innerHTML+=`<button onclick="filterCategory('${cat}')">${cat}</button>`;
+});
+}
+function filterCategory(cat){
+currentCategory=cat;
+currentPage=1;
+displayProducts(1);
+}
+
+function displayProducts(page){
+currentPage=page;
+const list=document.getElementById("product-list");
+list.innerHTML="";
+
+let filtered= currentCategory==="All" ? products :
+products.filter(p=>p.category===currentCategory);
+
+const start=(page-1)*itemsPerPage;
+const end=start+itemsPerPage;
+
+filtered.slice(start,end).forEach(product=>{
+list.innerHTML+=`
+<div class="product">
+<div class="emoji">${product.emoji}</div>
+<div class="category-label">${product.category}</div>
+<h3>${product.name}</h3>
+<div class="desc">${product.description}</div>
+<div class="rating">⭐ ${product.rating}</div>
+<div class="stock">In Stock: ${product.stock}</div>
+<div class="price">₹${product.price.toLocaleString()}</div>
+<button class="add-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+</div>`;
+});
+
+updatePagination(filtered.length);
+}
+
+function updatePagination(totalItems){
+const pageCount=Math.ceil(totalItems/itemsPerPage);
+const pagination=document.getElementById("pagination");
+pagination.innerHTML="";
+for(let i=1;i<=pageCount;i++){
+pagination.innerHTML+=`<button onclick="displayProducts(${i})"
+class="${i===currentPage?'active':''}">${i}</button>`;
+}
+}
+
+function addToCart(id){
+const product=products.find(p=>p.id===id);
+const existing=cart.find(item=>item.id===id);
+if(existing){existing.qty+=1;}
+else{cart.push({...product,qty:1});}
+updateCart();
+}
+
+function updateCart(){
+const cartItems=document.getElementById("cart-items");
+cartItems.innerHTML="";
+let total=0;
+cart.forEach(item=>{
+total+=item.price*item.qty;
+cartItems.innerHTML+=`${item.name} x ${item.qty}<br>`;
+});
+document.getElementById("total").textContent=total.toLocaleString();
+document.getElementById("cart-count").textContent=
+cart.reduce((sum,item)=>sum+item.qty,0);
+}
+
+function toggleCart(){
+const box=document.getElementById("cart-box");
+box.style.display=box.style.display==="block"?"none":"block";
+}
+
+createCategoryButtons();
+displayProducts(1);
+</script>
+
+</body>
+</html>

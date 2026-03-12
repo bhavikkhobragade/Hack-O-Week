@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeTantra-Style Quiz - Left-Aligned Options</title>
+<style>
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    width:100%;
+    font-family:'Segoe UI',sans-serif;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    overflow:hidden;
+}
+
+/* Full-screen container */
+.platform-container {
+    width:95%;
+    height:95%;
+    display:flex;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* Left panel: Question */
+.question-panel {
+    flex:1.2;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:30px;
+}
+
+.question-panel h2{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+.timer {
+    font-weight:bold;
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+/* Right panel: Options */
+.options-panel {
+    flex:1;
+    background: rgba(255,255,255,0.05);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:20px;
+}
+
+.options {
+    display:flex;
+    flex-direction:column;
+    gap:25px; /* spacing between options */
+    width:100%;
+}
+
+.option label {
+    display:flex;
+    align-items:center;
+    justify-content:flex-start; /* left-aligned */
+    background: rgba(255,255,255,0.15);
+    padding:20px 25px; /* larger padding */
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:22px; /* larger font */
+    width:100%;
+    box-sizing:border-box;
+}
+
+.option input {
+    margin-right:15px;
+    transform:scale(1.7); /* larger radio buttons */
+}
+
+.option:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Bottom buttons */
+.bottom-buttons {
+    position:fixed;
+    bottom:20px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+}
+
+button {
+    padding:15px 35px;
+    font-size:18px;
+    font-weight:bold;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.next-btn { background:#00c6ff; color:white; }
+.next-btn:hover { background:#0072ff; }
+
+.restart-btn { background:#ff6a00; color:white; display:none; }
+.restart-btn:hover { background:#e65c00; }
+
+.score {
+    margin-top:15px;
+    font-size:22px;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* Responsive */
+@media(max-width:900px){
+    .platform-container { flex-direction:column; }
+    .question-panel, .options-panel { flex:unset; width:100%; height:50%; }
+    .option label { font-size:20px; padding:18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="platform-container">
+    <div class="question-panel">
+        <div class="timer">⏳ Time Left: <span id="time">15</span>s</div>
+        <h2 id="question">Question</h2>
+        <div class="score" id="score"></div>
+    </div>
+    <div class="options-panel" id="options">
+        <!-- Options rendered here -->
+    </div>
+</div>
+
+<div class="bottom-buttons">
+    <button class="next-btn" onclick="nextQuestion()">Next</button>
+    <button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+</div>
+
+<script>
+const quizData = [
+    {question:"1. Capital of France?", options:["Berlin","Paris","Rome","Madrid"], answer:"Paris"},
+    {question:"2. Red Planet?", options:["Mars","Venus","Jupiter","Saturn"], answer:"Mars"},
+    {question:"3. Largest Ocean?", options:["Atlantic","Indian","Pacific","Arctic"], answer:"Pacific"},
+    {question:"4. 7 x 8 = ?", options:["54","56","64","48"], answer:"56"},
+    {question:"5. Fastest Land Animal?", options:["Lion","Cheetah","Tiger","Horse"], answer:"Cheetah"},
+    {question:"6. Who invented the telephone?", options:["Newton","Edison","Alexander Graham Bell","Tesla"], answer:"Alexander Graham Bell"},
+    {question:"7. Which gas do plants absorb?", options:["Oxygen","Carbon Dioxide","Nitrogen","Hydrogen"], answer:"Carbon Dioxide"},
+    {question:"8. Which is the largest continent?", options:["Africa","Asia","Europe","Antarctica"], answer:"Asia"},
+    {question:"9. Which planet has rings?", options:["Jupiter","Saturn","Mars","Venus"], answer:"Saturn"},
+    {question:"10. Who painted the Mona Lisa?", options:["Van Gogh","Da Vinci","Picasso","Rembrandt"], answer:"Da Vinci"}
+];
+
+let currentQuestion=0;
+let score=0;
+let timeLeft=15;
+let timer;
+
+const questionEl=document.getElementById("question");
+const optionsEl=document.getElementById("options");
+const scoreEl=document.getElementById("score");
+const timeEl=document.getElementById("time");
+
+function startTimer() {
+    timeLeft=15;
+    timeEl.textContent=timeLeft;
+    timer=setInterval(()=>{
+        timeLeft--;
+        timeEl.textContent=timeLeft;
+        if(timeLeft<=0){
+            clearInterval(timer);
+            nextQuestion();
+        }
+    },1000);
+}
+
+function loadQuestion() {
+    clearInterval(timer);
+    startTimer();
+
+    const currentQuiz = quizData[currentQuestion];
+    questionEl.textContent = currentQuiz.question;
+    optionsEl.innerHTML = "";
+
+    currentQuiz.options.forEach(option=>{
+        const div=document.createElement("div");
+        div.classList.add("option");
+        div.innerHTML=`<label><input type="radio" name="answer" value="${option}"> ${option}</label>`;
+        optionsEl.appendChild(div);
+    });
+}
+
+function nextQuestion() {
+    clearInterval(timer);
+    const selected=document.querySelector('input[name="answer"]:checked');
+    if(selected && selected.value===quizData[currentQuestion].answer) score++;
+
+    currentQuestion++;
+    if(currentQuestion<quizData.length) loadQuestion();
+    else showScore();
+}
+
+function showScore() {
+    questionEl.textContent="🎉 Quiz Completed!";
+    optionsEl.innerHTML="";
+    document.querySelector(".next-btn").style.display="none";
+
+    let percentage=(score/quizData.length)*100;
+    let message="";
+    if(percentage>=80) message="🌟 Excellent Performance!";
+    else if(percentage>=50) message="👍 Good Job!";
+    else message="📚 Keep Practicing!";
+
+    scoreEl.innerHTML=`Your Score: ${score} / ${quizData.length} <br>
+                       Percentage: ${percentage.toFixed(0)}% <br>${message}`;
+    document.querySelector(".restart-btn").style.display="inline-block";
+}
+
+function restartQuiz(){
+    currentQuestion=0;
+    score=0;
+    document.querySelector(".next-btn").style.display="inline-block";
+    document.querySelector(".restart-btn").style.display="none";
+    scoreEl.innerHTML="";
+    loadQuestion();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>

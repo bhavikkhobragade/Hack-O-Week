@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tech Fest 2026 | Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Cyberpunk Font -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- EmailJS -->
+<script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+
+<style>
+/* ---------- GLOBAL ---------- */
+* {
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #05010d;
+    color: #fff;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- ANIMATED BLOBS ---------- */
+.blob {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, #00f0ff, #7f00ff);
+    filter: blur(130px);
+    animation: float 10s infinite alternate ease-in-out;
+    opacity: 0.8;
+}
+.blob.one { top: 10%; left: 5%; }
+.blob.two { bottom: 10%; right: 5%; animation-delay: 4s; }
+
+@keyframes float {
+    from { transform: translateY(0); }
+    to { transform: translateY(-80px); }
+}
+
+/* ---------- FORM CARD ---------- */
+.card {
+    position: relative;
+    background: rgba(10,10,30,0.9);
+    width: 100%;
+    max-width: 520px;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 0 50px #7f00ff;
+    z-index: 10;
+}
+
+h2 {
+    text-align: center;
+    color: #00f0ff;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.85;
+    margin-bottom: 25px;
+}
+
+/* ---------- FORM ELEMENTS ---------- */
+label {
+    display: block;
+    margin-top: 16px;
+    font-size: 12px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    background: #0d0221;
+    border: 1px solid #7f00ff;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+}
+
+textarea {
+    resize: none;
+    height: 70px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 12px #00f0ff;
+}
+
+/* ---------- BUTTON ---------- */
+button {
+    margin-top: 28px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, #00f0ff, #7f00ff);
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+}
+
+button:hover {
+    box-shadow: 0 0 25px #00f0ff;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background -->
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+<!-- Form Card -->
+<div class="card">
+    <h2>⚡ TECH FEST 2026</h2>
+    <div class="subtitle">Official Online Registration Form</div>
+
+    <form id="regForm">
+
+        <!-- PERSONAL DETAILS -->
+        <label>Full Name</label>
+        <input name="name" required>
+
+        <label>Email Address</label>
+        <input type="email" name="email" required>
+
+        <label>Mobile Number</label>
+        <input type="tel" name="phone" required>
+
+        <!-- COLLEGE DETAILS -->
+        <label>College Name</label>
+        <input name="college" required>
+
+        <label>Department & Year</label>
+        <input name="department" placeholder="CSE - 3rd Year" required>
+
+        <!-- EVENT DETAILS -->
+        <label>Select Event</label>
+        <select name="event" required>
+            <option value="">Choose Event</option>
+            <option>Hackathon</option>
+            <option>AI Workshop</option>
+            <option>Web Design</option>
+            <option>Paper Presentation</option>
+            <option>Code Debugging</option>
+        </select>
+
+        <label>Team Name (if applicable)</label>
+        <input name="team">
+
+        <!-- EXTRA -->
+        <label>Why do you want to participate?</label>
+        <textarea name="reason"></textarea>
+
+        <button type="submit">🚀 Submit Registration</button>
+    </form>
+</div>
+
+<script>
+/* ---------- EMAILJS INIT ---------- */
+emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
+
+/* ---------- AUTOSAVE (LIKE GOOGLE FORM) ---------- */
+const form = document.getElementById("regForm");
+
+[...form.elements].forEach(el => {
+    if (el.name) {
+        el.value = localStorage.getItem(el.name) || "";
+        el.addEventListener("input", () => {
+            localStorage.setItem(el.name, el.value);
+        });
+    }
+});
+
+/* ---------- SUBMIT ---------- */
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form));
+
+    /* Send to Google Sheets */
+    await fetch("YOUR_GOOGLE_APPS_SCRIPT_URL", {
+        method: "POST",
+        body: JSON.stringify(data)
+    });
+
+    /* Email Confirmation */
+    emailjs.send("SERVICE_ID", "TEMPLATE_ID", {
+        name: data.name,
+        event: data.event,
+        to_email: data.email
+    });
+
+    alert("✅ Registration successful! Confirmation email sent.");
+    localStorage.clear();
+    form.reset();
+});
+</script>
+
+</body>
+</html>
