@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Development Bootcamp</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Reset & base */
+* { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+body { font-family: 'Roboto', sans-serif; line-height: 1.6; color: #fff; background: #0a1a2f; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* Navbar */
+nav {
+  position: sticky;
+  top: 0;
+  background: #0d1f40;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+nav .container { display: flex; justify-content: space-between; align-items: center; }
+nav a { margin-left: 20px; font-weight: bold; transition: 0.3s; color: #fff; }
+nav a:hover { color: #38bdf8; }
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(120deg, #0f172a, #1e3a8a, #2563eb);
+  background-size: 600% 600%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #fff;
+  text-align: center;
+  padding: 120px 20px 80px;
+  position: relative;
+}
+
+@keyframes gradientAnimation {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.hero h1 { font-size: 3rem; margin-bottom: 20px; animation: fadeIn 1s ease forwards; opacity: 0; }
+.hero p { font-size: 1.2rem; margin-bottom: 40px; animation: fadeIn 1.5s ease forwards; opacity: 0; }
+.hero form { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; animation: fadeIn 2s ease forwards; opacity: 0; }
+.hero input[type="email"] { padding: 15px; border-radius: 5px; border: none; flex: 1; min-width: 200px; }
+.hero button { padding: 15px 30px; border-radius: 5px; border: none; background: #38bdf8; color: #fff; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.hero button:hover { opacity: 0.9; }
+
+/* Features Section */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 60px 20px;
+  text-align: center;
+}
+.feature {
+  flex: 1 1 300px;
+  background: #1e293b;
+  padding: 30px 20px;
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.feature:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.feature h3 { margin-bottom: 15px; color: #38bdf8; }
+.feature p { color: #cbd5e1; }
+
+/* Curriculum */
+.curriculum { margin: 60px 20px; }
+.curriculum h2 { text-align: center; margin-bottom: 40px; color: #38bdf8; }
+.curriculum ul { max-width: 800px; margin: 0 auto; }
+.curriculum li { background: #1e293b; margin-bottom: 15px; padding: 15px 20px; border-radius: 5px; transition: background 0.3s, transform 0.3s; color: #cbd5e1; }
+.curriculum li:hover { background: #334155; transform: translateY(-2px); }
+
+/* Testimonials */
+.testimonials { background: #1e40af; color: #fff; padding: 60px 20px; text-align: center; }
+.testimonial { max-width: 600px; margin: 0 auto 30px; }
+.testimonial p { font-style: italic; margin-bottom: 10px; }
+.testimonial h4 { font-weight: bold; }
+
+/* Footer */
+footer { background: #0d1f40; color: #fff; text-align: center; padding: 30px 20px; }
+
+/* Animations */
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* Responsive */
+@media(max-width:768px){
+  .hero h1 { font-size: 2.2rem; }
+  .hero p { font-size: 1rem; }
+  .features { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="container">
+    <div class="logo"><a href="#">WebDev Institute</a></div>
+    <div class="menu">
+      <a href="#features">Features</a>
+      <a href="#curriculum">Curriculum</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#signup">Enroll</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="signup">
+  <div class="container">
+    <h1>Web Development Bootcamp</h1>
+    <p>Learn HTML, CSS, JavaScript, React, Node.js, and more in just 12 weeks!</p>
+    <form>
+      <input type="email" placeholder="Enter your email" required>
+      <button type="submit">Enroll Now</button>
+    </form>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+  <div class="feature">
+    <h3>Hands-On Projects</h3>
+    <p>Build real-world applications and a portfolio to showcase your skills.</p>
+  </div>
+  <div class="feature">
+    <h3>Expert Mentors</h3>
+    <p>Learn from industry professionals with years of web development experience.</p>
+  </div>
+  <div class="feature">
+    <h3>Job Assistance</h3>
+    <p>Get career guidance, resume reviews, and interview prep for tech jobs.</p>
+  </div>
+</section>
+
+<!-- Curriculum -->
+<section class="curriculum" id="curriculum">
+  <h2>Course Curriculum</h2>
+  <ul>
+    <li>HTML, CSS & Responsive Design</li>
+    <li>JavaScript & DOM Manipulation</li>
+    <li>Frontend Frameworks (React.js)</li>
+    <li>Backend Development with Node.js & Express</li>
+    <li>Databases: MongoDB & SQL Basics</li>
+    <li>Final Capstone Project</li>
+  </ul>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials" id="testimonials">
+  <div class="testimonial">
+    <p>"This bootcamp transformed my career. I landed a web developer job within months!"</p>
+    <h4>- Alex R.</h4>
+  </div>
+  <div class="testimonial">
+    <p>"The mentors were amazing, and the hands-on projects made learning practical."</p>
+    <h4>- Priya S.</h4>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2026 Web Dev Institute. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
