@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nebula Book Vault</title>
+    <style>
+        :root {
+            --accent: #bb86fc;
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --text: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+            margin: 0;
+        }
+
+        .vault-card {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        h1 { text-align: center; color: var(--accent); letter-spacing: 2px; }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            background: #2c2c2c;
+            border: 1px solid #444;
+            padding: 12px;
+            color: white;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--accent); }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            background: #333;
+            color: var(--text);
+        }
+
+        button:hover { background: var(--accent); color: var(--bg); }
+
+        .status-msg {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+            background: rgba(187, 134, 252, 0.1);
+            color: var(--accent);
+            min-height: 20px;
+        }
+
+        #displayArea {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .book-item {
+            background: #252525;
+            padding: 15px;
+            border-left: 4px solid var(--accent);
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-meta b { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div class="vault-card">
+    <h1>V A U L T</h1>
+    
+    <div class="input-box">
+        <input type="text" id="title" placeholder="Book Title">
+        <input type="text" id="author" placeholder="Author Name">
+    </div>
+
+    <div class="btn-grid">
+        <button onclick="addBook()">STORE</button>
+        <button onclick="searchBook()">LOCATE</button>
+        <button onclick="removeBook()">EXPUNGE</button>
+        <button onclick="displayBooks()">REFRESH LIST</button>
+    </div>
+
+    <div id="status" class="status-msg">System Online - Waiting for input...</div>
+
+    <div id="displayArea">
+        </div>
+</div>
+
+<script>
+    const LIMIT = 5; // Fixed size
+    let vault = []; 
+    let currentCount = 0;
+
+    const status = document.getElementById("status");
+
+    function updateStatus(msg) {
+        status.innerText = msg;
+    }
+
+    function addBook() {
+        let t = document.getElementById("title").value;
+        let a = document.getElementById("author").value;
+
+        if(!t || !a) return updateStatus("Error: Fields are empty!");
+        
+        if(currentCount >= LIMIT) {
+            updateStatus("Vault Full! Expunge a record first.");
+            return;
+        }
+
+        vault[currentCount] = { title: t, author: a };
+        currentCount++;
+        
+        updateStatus(`Stored: ${t}`);
+        displayBooks();
+    }
+
+    function searchBook() {
+        let t = document.getElementById("title").value.toLowerCase();
+        
+        for(let i=0; i<currentCount; i++) {
+            if(vault[i].title.toLowerCase() === t) {
+                updateStatus(`Found: ${vault[i].title} by ${vault[i].author}`);
+                return;
+            }
+        }
+        updateStatus("Record not found in database.");
+    }
+
+    function removeBook() {
+        let t = document.getElementById("title").value.toLowerCase();
+
+        for(let i=0; i<currentCount; i++) {
+            if(vault[i].title.toLowerCase() === t) {
+                // Shift array logic
+                for(let j=i; j < currentCount - 1; j++) {
+                    vault[j] = vault[j+1];
+                }
+                currentCount--;
+                updateStatus("Record expunged and array shifted.");
+                displayBooks();
+                return;
+            }
+        }
+        updateStatus("Cannot remove: Title not found.");
+    }
+
+    function displayBooks() {
+        let area = document.getElementById("displayArea");
+        area.innerHTML = "";
+
+        if(currentCount === 0) {
+            area.innerHTML = "<p style='text-align:center; opacity:0.5;'>Vault is empty.</p>";
+            return;
+        }
+
+        for(let i=0; i<currentCount; i++) {
+            area.innerHTML += `
+                <div class="book-item">
+                    <div class="book-meta">
+                        <b>${vault[i].title}</b><br>
+                        <small>BY ${vault[i].author.toUpperCase()}</small>
+                    </div>
+                    <div style="font-size: 0.7em; color: #555;">ID: 00${i+1}</div>
+                </div>
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
